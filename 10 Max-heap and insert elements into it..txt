@@ -1,0 +1,40 @@
+
+#include <stdio.h>
+int heap[100];
+int pointer=0;
+int start=0;
+void swap(int i,int j){
+    int temp=heap[i];
+    heap[i]=heap[j];
+    heap[j]=temp;
+}
+void heapD(int data){
+    heap[pointer]=data;
+    int temp=pointer;
+    while(pointer>0 && heap[pointer]>=heap[pointer/2]){
+        swap(pointer,pointer/2);
+        pointer/=2;
+    }
+    pointer=temp+1;
+}
+void delete(){
+    start++;
+}
+int main() {
+    int data;
+    for(int i=0;i<10;i++){
+        printf("Enter data :: ");
+        scanf("%d",&data);
+        if(data==-1) break;
+        heapD(data);
+    }
+    for(int i=start;i<pointer;i++){
+        printf("%d ",heap[i]);
+    }
+    delete();
+    printf("\n");
+    for(int i=start;i<pointer;i++){
+        printf("%d ",heap[i]);
+    }
+    return 0;
+}
