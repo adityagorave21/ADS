@@ -1,0 +1,171 @@
+#include <iostream>
+#include<queue>
+using namespace std;
+
+class Node
+{
+public:
+    int data;
+    Node *right;
+    Node *left;
+
+    Node(int d)
+    {
+        this->data = d;
+        this->right = NULL;
+        this->left = NULL;
+    }
+};
+
+Node *insertIntoBST(Node *&root, int data)
+{
+    if (root == NULL)
+    {
+        Node *root = new Node(data);
+        return root;
+    }
+    if (root->data > data)
+    {
+        root->left = insertIntoBST(root->left, data);
+    }
+    else
+    {
+        root->right = insertIntoBST(root->right, data);
+    }
+    return root;
+}
+
+bool search(Node* root,int val)
+{
+    if(root==NULL)
+    return false;
+    if(root->data>val)
+    {
+        return search( root->left,val);
+    }
+    else if(root->data<val)
+    {
+        return search(root->right,val);
+    }
+    else
+    {
+        return true;
+    }
+}
+
+void takeinput(Node *&root)
+{
+    int data;
+    cin >> data;
+
+    while (data != -1)
+    {
+        root = insertIntoBST(root, data);
+        cin >> data;
+    }
+}
+
+int minval(Node *root)
+{
+    if (root == NULL)
+        return -1;
+    Node *temp = root;
+    while (temp->left != NULL)
+    {
+        temp = temp->left;
+    }
+    return temp->data;
+}
+
+Node *deleteFromTree(Node *root, int x)
+{
+    if (root == NULL)
+        return root;
+
+    if (root->data == x)
+    {
+        if (root->left == NULL && root->right == NULL)
+        {
+            delete root;
+            return NULL;
+        }
+        if (root->left != NULL && root->right == NULL)
+        {
+            Node *temp = root->left;
+            delete root;
+            return temp;
+        }
+        if (root->left == NULL && root->right != NULL)
+        {
+            Node *temp = root->right;
+            delete root;
+            return temp;
+        }
+        if (root->left != NULL && root->right != NULL)
+        {
+            int mini = minval(root->right);
+            root->data = mini;
+            root->right = deleteFromTree(root->right, mini);
+            return root;
+        }
+    }
+    else if (root->data > x)
+    {
+        root->left = deleteFromTree(root->left, x);
+        return root;
+    }
+    else
+    {
+        root->right = deleteFromTree(root->right, x);
+        return root;
+    }
+}
+
+void levelOrderTraversal(Node *root)
+{
+    queue<Node *> q;
+    q.push(root);
+    q.push(NULL);
+
+    while (!q.empty())
+    {
+        Node *temp = q.front();
+        q.pop();
+        if (temp == NULL)
+        {
+            cout << endl;
+            if (!q.empty())
+            {
+                q.push(NULL);
+            }
+        }
+        else
+        {
+            cout << temp->data << " ";
+            if (temp->left)
+            {
+                q.push(temp->left);
+            }
+            if (temp->right)
+            {
+                q.push(temp->right);
+            }
+        }
+    }
+}
+
+int main()
+{
+    Node *root = NULL;
+    cout << "Enter the data to be inserted in BST" << endl;
+    takeinput(root);
+    cout << "Printing the Binary Search Tree :" << endl;
+    levelOrderTraversal(root);
+
+    cout<<"is 40 present in the bst: "<<search(root,40)<<endl;
+
+    deleteFromTree(root, 30);
+    cout << "Printing the Binary Search Tree After deletion of element :" << endl;
+    levelOrderTraversal(root);
+
+}

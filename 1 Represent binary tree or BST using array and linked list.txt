@@ -1,0 +1,81 @@
+#include<iostream>
+using namespace std;
+
+char tree[20];
+
+int root(char key){
+    if(tree[0] != '\0'){
+        cout<< " Tree already had root ";
+    }else{
+        tree[0] = key;
+    }
+    return 0;
+}
+
+int left(char key,int parent){
+    if(tree[parent] == '\0'){
+        cout << "\n Can't set child at " << (parent * 2) + 1 <<
+        " , no parent found";
+    }else{
+        tree[(parent *2) +1] = key;
+    }
+    return 0;
+}
+
+int right(char key,int parent){
+    if (tree[parent] == '\0'){
+        cout<< "\n Can't set child at "
+        << (parent * 2) +2
+        << " , no parent found ";
+    }else{
+        tree[(parent * 2) +2]= key;
+    }
+    return 0;
+}
+
+int print_tree(){
+    cout<< "\n";
+    for(int i=0;i<10;i++){
+        if(tree[i] != '\0'){
+            cout << tree[i];
+        }else{
+            cout<<"-";
+        }
+    }
+    return 0;
+}
+
+int main(){
+
+    cout<<"Enter the root character : ";
+    char character;
+    cin>>character;
+    root(character);
+    while(true){
+        cout<<"Enter which set you want to add if left=0 if right=1 if you want to end the 2 : "<<endl;
+        int x;
+        cin>>x;
+        if(x==0){
+             cout<< " Enter character : ";
+             char ch;
+             cin>>ch;
+              cout<< " Enter Level : ";
+             int level;
+             cin>>level;
+            left(ch,level);
+        }else if (x==1){
+              cout<< " Enter character : ";
+             char ch;
+             cin>>ch;
+             cout<< " Enter Level : ";
+             int level;
+             cin>>level;
+            right(ch,level);
+        }else {
+            break;
+        }
+    }
+    
+    print_tree();
+ return 0;
+}

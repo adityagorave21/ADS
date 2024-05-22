@@ -1,0 +1,123 @@
+#include <iostream>
+using namespace std;
+
+class TreeNode {
+public:
+    int data;
+    TreeNode* left;
+    TreeNode* right;
+
+    TreeNode(int val) : data(val), left(nullptr), right(nullptr) {}
+};
+
+class BinaryTree {
+private:
+    TreeNode* root;
+
+    int countNodesHelper(TreeNode* node) {
+        if (node == nullptr)
+            return 0;
+        return 1 + countNodesHelper(node->left) + countNodesHelper(node->right);
+    }
+
+    int countLeafNodesHelper(TreeNode* node) {
+        if (node == nullptr)
+            return 0;
+        if (node->left == nullptr && node->right == nullptr)
+            return 1;
+        return countLeafNodesHelper(node->left) + countLeafNodesHelper(node->right);
+    }
+
+    void printLeafNodesHelper(TreeNode* node) {
+        if (node == nullptr)
+            return;
+        if (node->left == nullptr && node->right == nullptr)
+            cout << node->data << " ";
+        printLeafNodesHelper(node->left);
+        printLeafNodesHelper(node->right);
+    }
+
+    int heightOfTreeHelper(TreeNode* node) {
+        if (node == nullptr)
+            return 0;
+        int leftHeight = heightOfTreeHelper(node->left);
+        int rightHeight = heightOfTreeHelper(node->right);
+        return 1 + max(leftHeight, rightHeight);
+    }
+
+    void mirrorImageHelper(TreeNode* node) {
+        if (node == nullptr)
+            return;
+        mirrorImageHelper(node->left);
+        mirrorImageHelper(node->right);
+        TreeNode* temp = node->left;
+        node->left = node->right;
+        node->right = temp;
+    }
+
+public:
+    BinaryTree() : root(nullptr) {}
+
+    void insert(int val) {
+        root = insertHelper(root, val);
+    }
+
+    TreeNode* insertHelper(TreeNode* node, int val) {
+        if (node == nullptr)
+            return new TreeNode(val);
+        if (val < node->data)
+            node->left = insertHelper(node->left, val);
+        else if (val > node->data)
+            node->right = insertHelper(node->right, val);
+        return node;
+    }
+
+    int countNodes() {
+        return countNodesHelper(root);
+    }
+
+    int countLeafNodes() {
+        return countLeafNodesHelper(root);
+    }
+
+    void printLeafNodes() {
+        printLeafNodesHelper(root);
+        cout << endl;
+    }
+
+    int heightOfTree() {
+        return heightOfTreeHelper(root);
+    }
+
+    void mirrorImage() {
+        mirrorImageHelper(root);
+    }
+};
+
+int main() {
+    BinaryTree tree;
+    tree.insert(1);
+    tree.insert(4);
+    tree.insert(2);
+    tree.insert(5);
+    tree.insert(3);
+   
+
+    cout << "Number of nodes in the tree: " << tree.countNodes() << endl;
+    cout << "Number of leaf nodes in the tree: " << tree.countLeafNodes() << endl;
+    cout << "Leaf nodes in the tree: ";
+    tree.printLeafNodes();
+    cout << "Height of the tree: " << tree.heightOfTree() << endl;
+
+    cout << "Mirror image of the tree:" << endl;
+    tree.mirrorImage();
+    cout << "Number of nodes in the mirror tree: " << tree.countNodes() << endl;
+    cout << "Number of leaf nodes in the mirror tree: " << tree.countLeafNodes() << endl;
+    cout << "Leaf nodes in the mirror tree: ";
+    tree.printLeafNodes();
+    cout << "Height of the mirror tree: " << tree.heightOfTree() << endl;
+
+    return 0;
+}
+
+

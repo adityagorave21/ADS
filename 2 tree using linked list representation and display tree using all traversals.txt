@@ -1,0 +1,61 @@
+#include<stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data; 
+    struct Node* left; 
+    struct Node* right; 
+};
+
+struct Node* newNode(int data) {
+    struct Node* node = (struct Node*) malloc(sizeof(struct Node)); 
+    node->data = data; 
+    node->left = NULL; 
+    node->right = NULL; 
+    return node;
+}
+
+void print_In_Order(struct Node* node) {
+    if (node == NULL) return; 
+
+    print_In_Order(node->left); 
+    printf("%d ", node->data); 
+    print_In_Order(node->right); 
+}
+
+void print_Pre_Order(struct Node* node) {
+    if (node == NULL) return; 
+
+    printf("%d ", node->data);  
+    print_Pre_Order(node->left); 
+    print_Pre_Order(node->right); 
+}
+
+void print_Post_Order(struct Node* node) {
+    if (node == NULL) return; 
+
+    print_Post_Order(node->left); 
+    print_Post_Order(node->right); 
+    printf("%d ", node->data); 
+}
+
+int main() {
+    
+    struct Node* root = newNode(1); 
+    root->left = newNode(2); 
+    root->right = newNode(3); 
+    root->left->left = newNode(4); 
+    root->left->right = newNode(5); 
+
+    printf("In-order traversal of a binary tree:    ");
+    print_In_Order(root);
+    printf("\n");
+    printf("Pre-order traversal of a binary tree:   ");
+    print_Pre_Order(root);
+    printf("\n");
+    printf("Post-order traversal of a binary tree:  ");
+    print_Post_Order(root); 
+
+    return 0; 
+}
+
